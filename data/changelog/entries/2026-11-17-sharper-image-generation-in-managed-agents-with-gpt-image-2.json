@@ -1,0 +1,15 @@
+{
+  "guid": "6afbd6ce51fc4ac1321aba12",
+  "title": "🎨 Sharper Image Generation in Managed Agents with GPT Image 2.6!",
+  "link": "https://ideas.gohighlevel.com/changelog/sharper-image-generation-in-managed-agents-with-gpt-image-26",
+  "date": "2026-11-17",
+  "categories": [
+    "agent studio",
+    "managed agent",
+    "new"
+  ],
+  "text": "Managed Agents now create sharper, more detailed images with cleaner text using GPT Image 2.6! 🚀\nWe've upgraded Image Generation to deliver better-quality visuals for social media, advertisements, product images, and marketing creatives.\n✨ What's New?\n🖼️ Improved Image Quality\nMedium & High quality now use GPT Image 2.6 for sharper details and clearer text.\nLow continues using GPT Image 2.5 for faster, cost-effective drafts.\nSupports multiple aspect ratios, including 1:1, 9:16, 16:9, and 21:9.\n💰 Compare Image Generation Costs\nNew Compare costs option in Agent Studio.\nEasily compare Low (~0.1×), Medium (1×), and High (~4×) relative costs.\nChoose the right balance between quality and cost.\n📊 Better Execution Visibility\nAgent Logs now show the model, quality, and size used for each image.\nActivity automatically refreshes when background executions finish.\n🛠️ How to Get Started\nGo to AI Agents → Agent Studio → Managed Agents.\nOpen your agent and enable Image Generation.\nSelect Low, Medium, or High quality and use Compare costs to review pricing.\nAsk your agent to generate an image!\n🎯 Why It Matters\nSharper visuals for ads, social media, and marketing.\nClearer text with fewer manual corrections.\nTransparent costs with flexible quality options.\nAutomatic upgrade for existing agents, with quality preferences preserved.\nSharper Images. Better Quality. Smarter Costs. 🚀",
+  "links": [
+    "https://canny-assets.io/images/86b89dc94bd32d2daaf25baf1ae5ef58.gif"
+  ]
+}

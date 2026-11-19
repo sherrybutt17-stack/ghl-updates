@@ -1,0 +1,18 @@
+{
+  "guid": "6af70e1055fed258c03bcb96",
+  "title": "AI Studio chat composer: richer @ and / inputs, smoother streaming",
+  "link": "https://ideas.gohighlevel.com/changelog/ai-studio-chat-composer-richer-and-inputs-smoother-streaming",
+  "date": "2026-11-13",
+  "categories": [
+    "ai studio",
+    "improved"
+  ],
+  "text": "AI Studio's chat composer is now richer. Point the AI at specific files with @, and start common integrations with / skills. Responses also stream in more smoothly.\nThe challenge\nTo point the AI at a particular file, or to ask for a common integration, you had to describe it in plain text and hope it was understood. Streaming replies could also look jumpy while they rendered.\nWhat's new\n- @ file references (Code view): Type @ to pick a project file, optionally down to a line or range. It appears as a pill in the composer and in sent messages.\n\n- / skills (Builder): Type / to pick a built-in skill: Database Optimization, Form Tracking, Calendar Integration, Payment Integration or Chat Widget. You can use one skill per message, and integration skills ask you to choose the integration before they run.\n\n- Smoother streaming: Replies appear smoothly as they stream, Markdown renders without stutter, and reduced-motion settings are respected.\n- Rich composer: Image attachments, selected-element context, international keyboard (IME) input as before.\nHow this helps your business\n- More precise edits: Tell the AI exactly which file or lines to change.\n- Faster integrations: Start forms, calendars, payments and chat widgets in one step.\n- Cleaner experience: Responses are easier to follow as they arrive.\n- More accessible: Pickers work with keyboards and screen readers, and reduced motion is supported.\nHow to get started\n- Navigate to AI Studio, open a project, then go to Chat.\n- Activate: type @ in Code view to reference a file, or / in Builder to choose a skill.\n- Enjoy: for example, type /, choose Payment Integration, pick your integration, and send.\nGood to know\n- @ file references work in Code view only. / skills work in Builder only.\n- A file reference tells the AI which file you mean. It does not pin the file's contents into context.\n- Typing / or @ as plain text still works. If nothing matches, Enter sends the message normally (e.g. \"fix the /pricing page\").\n- Database Optimization is unavailable while there's a Cloud status error. The other skills are unaffected.\n- No data migration is needed. Existing chats and skill follow-ups keep working.",
+  "links": [
+    "https://canny-assets.io/images/e6d9352a1ada4dd826b05eeafed50dce.png",
+    "https://canny-assets.io/images/006ba66e1caa647f0ed4bb7635ca440f.png",
+    "https://canny-assets.io/images/faca0776d2e8479ce728585aae4b56fb.png",
+    "https://canny-assets.io/images/75d2aab1540a2e9ab3cc210f1e484c37.png",
+    "https://canny-assets.io/images/9c4cf39441b9206c25b694ed288abc40.png"
+  ]
+}

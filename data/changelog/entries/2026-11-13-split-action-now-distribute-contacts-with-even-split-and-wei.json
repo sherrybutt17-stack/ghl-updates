@@ -1,0 +1,16 @@
+{
+  "guid": "6af6f99b9fc7614770c9093d",
+  "title": "Split Action: Now distribute contacts with Even split and Weighted split",
+  "link": "https://ideas.gohighlevel.com/changelog/split-action-now-distribute-contacts-with-even-split-and-weighted-split",
+  "date": "2026-11-13",
+  "categories": [
+    "automations",
+    "improved"
+  ],
+  "text": "The Split action now supports Even split and Weighted split, giving you more control over how contacts move through your workflow paths.\nWhat’s new?\n- Even split: Send contacts to each path in turn, keeping the distribution even. Use it to share incoming leads evenly across teams or create balanced groups for different follow-up journeys.\n- Weighted split: Send contacts to each path in turn, based on the percentages you set. Use it when one team or journey should receive a larger share of contacts.\n- Random split remains available to randomly assign each contact to a path based on the percentages you set.\nWhy this matters\nSetting equal percentages on a Random split does not guarantee equal groups, especially with a small number of contacts. Even split keeps the paths balanced as contacts arrive. Weighted split gives you turn-based distribution when those shares need to be different.\nFor example, use a 60/40 Weighted split to send three out of every five newly distributed contacts to one path and two to the other. This helps you distribute leads according to team capacity.\nHow it works\n- Open your workflow and add or edit a Split action.\n- Choose Even split or Weighted split from Distribution Type.\n- Name your paths. For Weighted split, enter the percentage for each path using whole-number percentages that total 100%.\n- Save the action and publish your workflow when you are ready.\nAdditional notes\n- Existing Random split actions retain their current configuration.\n- Once contacts have entered an Even split or Weighted split, its distribution settings are locked. Use Reset test to edit those settings again. Saving a reset clears the split’s statistics and restarts the rotation.\n- With Returning contacts set to Keep the same path, contacts who re-enter follow their previously assigned path.\nPreview\nChoose how contacts are distributed\n\nKeep paths balanced with Even split\n\nSet a weighted distribution",
+  "links": [
+    "https://canny-assets.io/images/1430b8b6beccc73b2fb4ea343df05d09.png",
+    "https://canny-assets.io/images/d917571078878eb1355d00af44ab6b81.png",
+    "https://canny-assets.io/images/d47f059899e05ae6bcbb4dd33835a7b0.png"
+  ]
+}

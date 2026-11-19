@@ -1,0 +1,29 @@
+# Python environments and model weights (multi-GB, rebuilt locally)
+envs/
+models/
+__pycache__/
+*.pyc
+
+# Personal recordings — voice clone reference and face video (never commit)
+assets/voice/*
+!assets/voice/READ_THIS.md
+assets/face/*
+*.wav
+*.mp3
+*.m4a
+*.mp4
+*.mov
+
+# Per-video jobs: narration, renders, Kaggle outputs
+jobs/*
+
+# Kaggle env build logs / downloads
+data/kaggle_setup/
+
+# Credentials, just in case
+kaggle.json
+.env
+.claude/settings.local.json
+
+# macOS
+.DS_Store

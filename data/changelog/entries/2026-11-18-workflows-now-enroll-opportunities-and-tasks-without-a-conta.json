@@ -1,0 +1,12 @@
+{
+  "guid": "6afd8bdd7085c28c3455de8c",
+  "title": "Workflows: Now enroll opportunities and tasks without a contact",
+  "link": "https://ideas.gohighlevel.com/changelog/workflows-now-enroll-opportunities-and-tasks-without-a-contact",
+  "date": "2026-11-18",
+  "categories": [
+    "automations",
+    "improved"
+  ],
+  "text": "Opportunities and tasks can now enter workflows directly, even when they have no associated contact. Automate follow-up for a deal or an internal task without first creating or linking a contact.\nWhat's changed?\nPreviously, an opportunity or task needed an associated contact before it could enter a workflow. That requirement has been removed. When an opportunity or task matches a workflow trigger, the record can enter and continue through the workflow on its own.\n- Opportunities: Start a workflow when an opportunity is created, changes, moves stage, changes status, or becomes stale, including when it has no associated contact.\n- Tasks: Use task triggers such as Task added, Task completed, and Task reminder for tasks without an associated contact.\n- Opportunity date reminders: Use Custom date reminder with an Opportunity date field to start a workflow based on a date stored on an opportunity.\nHow to get started\n- Go to Automations > Workflows and create or open a workflow.\n- Add an opportunity or task trigger and configure any filters you need. For a date-based reminder, choose Custom date reminder and select an Opportunity date field.\n- Add the actions for your process and save the workflow.\nFor example, an opportunity without a contact can enter a workflow when it is created, so your team can assign an owner and begin working the deal. An internal task without a contact can also enter a workflow when it is completed to begin the next step of a handoff.\nGood to know\nReview actions that depend on contact information or a contact recipient when building a workflow for records without a contact. Those details are unavailable when no contact is associated with the record.",
+  "links": []
+}

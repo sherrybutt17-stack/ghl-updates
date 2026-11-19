@@ -1,0 +1,14 @@
+{
+  "guid": "6afd8a397085c28c3455aaee",
+  "title": "Inbound Webhook: Choose suggested contact, opportunity, and task actions",
+  "link": "https://ideas.gohighlevel.com/changelog/inbound-webhook-choose-suggested-contact-opportunity-and-task-actions",
+  "date": "2026-11-18",
+  "categories": [
+    "automations",
+    "improved"
+  ],
+  "text": "When you add an Inbound Webhook trigger, the workflow builder suggests actions for contacts, opportunities, and tasks. Choose the action your workflow needs directly from the suggestions.\nWhat’s new?\nThe Suggested for Inbound Webhook section groups five actions by record type:\n- Contact: Create contact or Find contact.\n- Opportunity: Create opportunity or Find opportunity.\n- Task: Add task.\n\nThis makes it easier to find the right next step for the record your workflow needs.\nHow to use it\n- Go to Automation > Workflows and open a workflow.\n- Add an Inbound Webhook trigger and select a sample request as its mapping reference. Save the trigger.\n- Under Suggested for Inbound Webhook, choose a contact, opportunity, or task action.\n- Configure and save the action, then add the rest of your workflow.\nGood to know\nInbound Webhook is a premium trigger. Additional charges apply per execution.",
+  "links": [
+    "https://canny-assets.io/images/5357c45a14e9b836fa4c20a0da0c035b.png"
+  ]
+}

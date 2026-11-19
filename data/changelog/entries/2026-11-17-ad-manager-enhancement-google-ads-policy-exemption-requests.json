@@ -1,0 +1,15 @@
+{
+  "guid": "6afc31ce70a15834e8810734",
+  "title": "Ad Manager Enhancement - Google Ads Policy Exemption Requests",
+  "link": "https://ideas.gohighlevel.com/changelog/ad-manager-enhancement-google-ads-policy-exemption-requests",
+  "date": "2026-11-17",
+  "categories": [
+    "ad manager",
+    "improved"
+  ],
+  "text": "👀 What's New?\nWe've enhanced HighLevel Ad Manager to allow users to request policy exemptions for eligible Google Ads policy violations directly from the campaign builder.\nPreviously, users encountering these violations were blocked from publishing their campaigns. Now, they can request an exemption and retry publishing without leaving HighLevel Ad Manager.\n👷 How It Works:\n- Policy Violation Detection: When Google flags a policy violation during publishing, Ad Manager identifies whether the violation is eligible for an exemption.\n- Request Exemption: An actionable Request Exemption option appears alongside eligible policy errors in the campaign's error section.\n\n- Review & Confirm: Clicking the ‘Request Exemption’ option opens a modal displaying the policy violation details and a confirmation checkbox to acknowledge Google’s advertising policies.\n\n- Request and Publish: Once confirmed, users can click Request and Publish to submit the exemption request and automatically retry publishing their campaign.\n- Publishing Status: The campaign follows the usual publishing process, with the exemption applied to the eligible policy violation.\n🌟 Why It Matters:\n- Fewer Publishing Blockers: Resolve eligible Google Ads policy violations without leaving Ad Manager.\n- Simplified Experience: Request exemptions and retry publishing through a single action.\n- Greater Transparency: Understand the specific policy violation and available resolution before proceeding.\n📝 Notes:\n- Available for Google Ads campaigns when Google identifies a policy violation as eligible for exemption.\n- The exemption option appears only for eligible policy violations, not unrelated publishing errors.\n- Requesting an exemption does not resolve other validation or publishing errors in the campaign.\n- Campaign publishing remains subject to Google's advertising policies and standard review process.",
+  "links": [
+    "https://canny-assets.io/images/c8857cd6e071d798c9f476baee3a1665.png",
+    "https://canny-assets.io/images/c1e2430aa140b62e8b63c558d9388af5.png"
+  ]
+}

@@ -1,0 +1,59 @@
+# GHL update video pipeline — settings
+# Paths are relative to this folder.
+
+kaggle_user: ""            # set automatically after `kaggle auth login` (bin/ghl doctor fills it)
+
+tools:
+  ffmpeg: /opt/homebrew/bin/ffmpeg     # captions are drawn as images, so the standard build is enough
+  ffprobe: /opt/homebrew/bin/ffprobe
+
+changelog:
+  rss: https://ideas.gohighlevel.com/api/changelog/feed.rss
+  page: https://ideas.gohighlevel.com/changelog
+
+voice:
+  model: original          # original (already downloaded) | turbo (faster, extra ~2 GB download)
+  ref: assets/voice/ref.wav
+  device: auto             # auto (mps, falls back to cpu) | mps | cpu
+  seed: 42
+  exaggeration: 0.5        # original/multilingual only: 0.3 calm … 0.7 energetic
+  cfg_weight: 0.5          # original/multilingual only: lower = slower, more deliberate
+  max_retries: 3           # regenerate a sentence if Whisper hears it wrong
+  max_word_error: 0.15     # >15% words wrong -> regenerate
+
+audio:
+  sample_rate: 48000
+  lufs: -14                # loudness target for social platforms
+  sentence_gap: 0.25       # seconds of silence between sentences
+  paragraph_gap: 0.6       # seconds between paragraphs / slides
+
+face:
+  avatar: assets/face/avatar.mp4   # 25 fps, no audio, the 25-35 s base clip
+  fps: 25
+  crop: null               # [x, y, size] square around your face in avatar.mp4 (set by `ghl face-prep`)
+  musetalk:
+    extra_margin: 10
+    left_cheek_width: 90
+    right_cheek_width: 90
+    parsing_mode: jaw
+    batch_size: 16
+
+captions:
+  font: Avenir Next        # any font installed on the Mac, or put a .ttf in assets/brand/fonts
+  asr_model: mlx-community/whisper-small.en-mlx   # used for caption timing + voice error checks
+  words_per_chunk: 3
+  color: "FFFFFF"
+  highlight: "FFD400"      # current word colour (hex RRGGBB)
+  outline: "000000"
+
+brand:
+  name: ""                 # e.g. your agency name, shown on the end card
+  accent: "#2D6BFF"
+  background: "#0B1020"
+  cta: "Follow for weekly GHL updates"
+  logo: assets/brand/logo.png   # optional
+
+layout:
+  bubble_size: 360         # face circle diameter on 1920x1080
+  bubble_margin: 40
+  bubble_ring: 6

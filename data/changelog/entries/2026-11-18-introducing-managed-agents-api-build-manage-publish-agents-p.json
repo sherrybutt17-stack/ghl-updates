@@ -1,0 +1,15 @@
+{
+  "guid": "6afdd33d4e1eaf9d3eb012d7",
+  "title": "🚀 Introducing Managed Agents API – Build, Manage & Publish Agents Programmatically!",
+  "link": "https://ideas.gohighlevel.com/changelog/introducing-managed-agents-api-build-manage-publish-agents-programmatically",
+  "date": "2026-11-18",
+  "categories": [
+    "agent studio",
+    "managed agent",
+    "new"
+  ],
+  "text": "Create, update, publish, and manage Managed Agents directly through HighLevel APIs! 🤖\nWith the new Managed Agents API, you can build AI agents using natural-language instructions, automate their setup, and manage their entire lifecycle without opening Agent Studio.✨ What's New?\n🤖 Complete Agent Lifecycle via API\nCreate Agents: Describe what you need, and AI automatically builds the agent, including subagents when required.\nUpdate Agents: Refine existing agents using simple natural-language instructions.\nGuided Setup: The builder asks for missing details, which your application can provide.\nPublish & Unpublish: Take agents live or pause them with a single API request.\nBuilt-in Validation: Automatically check whether an agent is ready to publish.🔐 Secure API Access\nDedicated permission scope for building and publishing agents.\nAccess through HighLevel Private Integrations.\nCreating, publishing, and unpublishing agents is free; agent executions follow standard usage pricing.\n💡 What Can You Build?\nWhite-Label AI Builders: Let customers create agents directly from your application.\nAutomated Onboarding: Deploy agents across multiple sub-accounts.\nAgency Agent Libraries: Create reusable agents for clients.\nCampaign Automation: Publish or unpublish agents based on business needs.\nAI-Powered Agent Creation: Enable AI assistants to build and deploy Managed Agents.\n🛠️ How to Get Started\nCreate a Private Integration in your HighLevel sub-account.\nEnable the Managed Agents build and publish permission.\nUse the API to create, update, and publish agents.\nExecute published agents through the existing API.\n🎯 Why It Matters\nFull Automation: Manage the complete agent lifecycle through APIs.\nFaster Deployment: Build and publish agents without manual configuration.\nScalable: Automate agent creation across client accounts.\nFlexible Integration: Bring Managed Agents into your own products and workflows.\n📢 Availability\nAvailable for all sub-accounts through Private Integrations.\n📚 API Documentation: https://marketplace.gohighlevel.com/docs/ghl/agent-studio/managed-agents\nBuild Agents. Automate Deployment. Scale with APIs. 🚀",
+  "links": [
+    "https://marketplace.gohighlevel.com/docs/ghl/agent-studio/managed-agents"
+  ]
+}

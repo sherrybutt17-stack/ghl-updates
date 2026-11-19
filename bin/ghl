@@ -1,0 +1,167 @@
+#!/usr/bin/env bash
+# GHL update videos — one command for every step. Run `bin/ghl help`.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+cd "$ROOT"
+TOOLS="$ROOT/envs/tools/bin/python"
+TTS="$ROOT/envs/tts/bin/python"
+UV="$ROOT/envs/bootstrap/bin/uv"
+P="$ROOT/pipeline"
+export PYTORCH_ENABLE_MPS_FALLBACK=1 TOKENIZERS_PARALLELISM=false PYTHONWARNINGS=ignore
+export UV_HTTP_TIMEOUT=120 UV_HTTP_RETRIES=8
+# Chatterbox pinned to the last known-good commit (project retired Aug 2026)
+CHATTERBOX="chatterbox-tts @ git+https://github.com/resemble-ai/chatterbox@ab55923c27"
+TEST_LINE="Hey, it's your weekly Go High Level update. Three new features dropped this week, and the second one is a game changer for agencies."
+
+need() { [ -x "$1" ] || { echo "Missing $(basename "$(dirname "$(dirname "$1")")") environment — run: bin/ghl setup"; exit 1; }; }
+
+cmd="${1:-help}"; shift || true
+case "$cmd" in
+  setup)
+    [ -x "$UV" ] || { python3 -m venv envs/bootstrap && envs/bootstrap/bin/pip install -q uv; }
+    "$UV" python install 3.11
+    [ -x "$TOOLS" ] || "$UV" venv -q --python 3.11 envs/tools
+    VIRTUAL_ENV=envs/tools "$UV" pip install -q pyyaml numpy scipy soundfile pyloudnorm pillow mlx-whisper opencv-python-headless kaggle six
+    [ -x "$TTS" ] || "$UV" venv -q --python 3.11 envs/tts
+    VIRTUAL_ENV=envs/tts "$UV" pip install -q "$CHATTERBOX" pyyaml soundfile
+    echo "setup done"; "$0" doctor ;;
+
+  doctor)
+    ok() { printf "  %-28s %s\n" "$1" "$2"; }
+    echo "Checks:"
+    [ -x "$TOOLS" ] && "$TOOLS" -c "import yaml,numpy,PIL,mlx_whisper,cv2,pyloudnorm" 2>/dev/null && ok "tools environment" "OK" || ok "tools environment" "MISSING (bin/ghl setup)"
+    [ -x "$TTS" ] && "$TTS" -c "import chatterbox" 2>/dev/null && ok "voice environment" "OK" || ok "voice environment" "MISSING (bin/ghl setup)"
+    ffmpeg -hide_banner -filters 2>/dev/null | grep -q " alphamerge " && ok "ffmpeg" "OK" || ok "ffmpeg" "MISSING"
+    [ -f assets/voice/ref.wav ] && ok "voice reference" "OK" || ok "voice reference" "not yet (record + bin/ghl voice-prep)"
+    [ -f assets/face/avatar.mp4 ] && ok "face base clip" "OK" || ok "face base clip" "not yet (record + bin/ghl face-prep)"
+    if [ -x "$ROOT/envs/tools/bin/kaggle" ] && "$ROOT/envs/tools/bin/kaggle" datasets list --mine >/dev/null 2>&1; then ok "kaggle login" "OK"; else ok "kaggle login" "not yet (envs/tools/bin/kaggle auth login)"; fi
+    grep -q '"env_ready": true' data/kaggle_state.json 2>/dev/null && ok "kaggle GPU environment" "OK" || ok "kaggle GPU environment" "not built (bin/ghl kaggle-setup)"
+    ok "free disk" "$(df -h "$ROOT" | tail -1 | awk '{print $4}')" ;;
+
+  fetch)          need "$TOOLS"; "$TOOLS" "$P/fetch_changelog.py" "$@" ;;
+  mark-used)      need "$TOOLS"; "$TOOLS" "$P/fetch_changelog.py" --mark-used "$@" ;;
+
+  new)            # bin/ghl new "Title" [--style head|slides|loom] [--screen file.mov]
+    need "$TOOLS"
+    "$TOOLS" - "$@" <<'PY'
+import argparse, sys
+sys.path.insert(0, "pipeline")
+from common import create_job
+ap = argparse.ArgumentParser(prog="ghl new")
+ap.add_argument("title"); ap.add_argument("--style", default="head", choices=["head", "slides", "loom"])
+ap.add_argument("--screen")
+a = ap.parse_args()
+if a.style == "loom" and not a.screen:
+    sys.exit("Loom style needs --screen <recording>")
+j = create_job(a.title, a.style, a.screen)
+print(f"job: {j.id}\nfolder: {j.dir}\nnext: write {j.dir}/script.md")
+PY
+    if [[ " $* " == *" --screen "* ]]; then
+      scr=$(printf '%s\n' "$@" | awk 'f{print;exit} /^--screen$/{f=1}')
+      "$TOOLS" "$P/screen.py" "$scr"
+    fi ;;
+
+  screen)         need "$TOOLS"; "$TOOLS" "$P/screen.py" "$@" ;;
+  use)            echo "$1" > jobs/.current; echo "current job: $1" ;;
+  status)
+    need "$TOOLS"
+    "$TOOLS" -c "
+import sys, json; sys.path.insert(0,'pipeline')
+from common import current_job
+j = current_job(sys.argv[1] if len(sys.argv)>1 else None)
+print('job:   ', j.id, f'({j.style})'); print('folder:', j.dir)
+print('done:  ', ', '.join(j.data.get('stages_done', [])))
+for k,v in j.data.get('timings',{}).items(): print('  ', k, v)
+" "$@" ;;
+
+  voice)          need "$TOOLS"; need "$TTS"; "$TOOLS" "$P/voice.py" "$@" ;;
+  approve-voice)
+    need "$TOOLS"
+    "$TOOLS" -c "
+import sys; sys.path.insert(0,'pipeline')
+from common import current_job
+j = current_job(); assert j.has('voice'), 'generate the voice first'
+j.stage_done('approved_voice'); print('voice approved for', j.id)" ;;
+
+  lipsync)        need "$TOOLS"; "$TOOLS" "$P/kaggle_lipsync.py" "$@" ;;
+  kaggle-setup)   need "$TOOLS"; "$TOOLS" "$P/kaggle_lipsync.py" --setup ;;
+  captions)       need "$TOOLS"; "$TOOLS" "$P/captions.py" "$@" ;;
+  compose)        need "$TOOLS"; "$TOOLS" "$P/compose.py" "$@" ;;
+  preview)        need "$TOOLS"; "$TOOLS" "$P/captions.py" && "$TOOLS" "$P/compose.py" --preview "$@" ;;
+
+  render)         # lip-sync (if needed) -> captions -> compose
+    need "$TOOLS"
+    done_stages=$("$TOOLS" -c "import sys; sys.path.insert(0,'pipeline'); from common import current_job; print(' '.join(current_job().data.get('stages_done',[])))")
+    [[ " $done_stages " == *" approved_voice "* ]] || { echo "Approve the voice first: bin/ghl approve-voice"; exit 1; }
+    [[ " $done_stages " == *" lipsync "* ]] || "$TOOLS" "$P/kaggle_lipsync.py"
+    "$TOOLS" "$P/captions.py"
+    "$TOOLS" "$P/compose.py" ;;
+
+  face-prep)      need "$TOOLS"; "$TOOLS" "$P/face_prep.py" "$@" ;;
+  voice-prep)     need "$TOOLS"; "$TOOLS" "$P/voice_prep.py" "$@" ;;
+  voice-pick)     need "$TOOLS"; "$TOOLS" "$P/voice_prep.py" --pick "$1" ;;
+  voice-test)     # clone the same line with each candidate reference (or the chosen one)
+    need "$TOOLS"; need "$TTS"
+    mkdir -p assets/voice/test
+    "$TOOLS" - "$TEST_LINE" "${1:-}" <<'PY' > assets/voice/test/items.json
+import json, sys, glob, os
+sys.path.insert(0, "pipeline")
+from common import load_pronunciations
+from script_format import spoken
+line, model = sys.argv[1], sys.argv[2]
+refs = sorted(glob.glob("assets/voice/candidates/cand_*.wav")) or (["assets/voice/ref.wav"] if os.path.exists("assets/voice/ref.wav") else [""])
+items = [{"k": i + 1, "spoken": spoken(line, load_pronunciations()), "seed": 42, "ref": os.path.abspath(r) if r else "",
+          "out": os.path.abspath(f"assets/voice/test/{os.path.splitext(os.path.basename(r))[0] if r else 'default'}{'_' + model if model else ''}.wav")}
+         for i, r in enumerate(refs)]
+print(json.dumps(items))
+PY
+    "$TTS" "$P/voice_tts.py" --items assets/voice/test/items.json ${1:+--model "$1"}
+    echo "Listen: open assets/voice/test/  — then pick with: bin/ghl voice-pick N" ;;
+
+  test)           # 10-second end-to-end smoke test (no GPU unless --gpu)
+    need "$TOOLS"; need "$TTS"
+    style="${1:-slides}"
+    "$0" new "Pipeline test $style" --style "$style" >/dev/null
+    job=$(cat jobs/.current)
+    cat > "jobs/$job/script.md" <<'MD'
+# GHL Weekly: Pipeline Test
+[slide] Managed Agents API | Build and publish agents from code
+HighLevel just launched the Managed Agents API. Your GHL setup can now be scripted end to end.
+MD
+    "$TOOLS" "$P/voice.py" && "$TOOLS" "$P/captions.py" && "$TOOLS" "$P/compose.py" --preview
+    echo "test job: jobs/$job" ;;
+
+  clean)          # remove bulky working files from finished jobs (keeps out/ and script)
+    for d in jobs/*/; do
+      [ -f "$d/job.json" ] || continue
+      grep -q '"compose"' "$d/job.json" || continue
+      rm -rf "$d/work" "$d/frames" "$d/kaggle_in" "$d/tts"
+      echo "cleaned $d"
+    done ;;
+
+  help|*)
+    cat <<'TXT'
+bin/ghl — GHL update videos with your AI face + voice
+
+One-time
+  setup                     install Python environments
+  doctor                    check everything is ready
+  voice-prep <raw.m4a>      cut 3 voice reference candidates from your recording
+  voice-test [turbo]        clone a test line with each candidate
+  voice-pick <N>            choose candidate N as your voice
+  face-prep <raw.mov>       make the base face clip (auto-picks steadiest 30 s)
+  kaggle-setup              build + test the free GPU environment on Kaggle
+
+Each video
+  fetch                     pull new GHL changelog posts
+  new "Title" [--style head|slides|loom] [--screen rec.mov]
+  (Claude writes jobs/<job>/script.md  ->  you approve it)
+  voice [--redo 3,7]        generate narration in your voice
+  approve-voice             after listening
+  render                    Kaggle lip-sync -> captions -> final videos
+  preview                   layout preview with the raw (un-synced) face clip
+  status | use <job> | clean | test [slides|head]
+TXT
+    ;;
+esac
